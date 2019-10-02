@@ -2,3 +2,8 @@
 .DS_Store/
 *.pyo
 *.pyc
+hosts
+hosts.log
+hosts.merged
+hosts.whitelist
+hosts.blacklist
