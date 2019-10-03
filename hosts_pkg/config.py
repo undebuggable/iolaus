@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 IP_LOCAL_0 = "0.0.0.0"
 IP_LOCAL_127 = "127.0.0.1"
 IP_BLOCKING = IP_LOCAL_0
