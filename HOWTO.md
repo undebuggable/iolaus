@@ -18,4 +18,4 @@ This will load the files, if present, from the current directory
 The result will be the files
 
 * `hosts.merged` - merged host file
-* `hosts.log` - compregensive report on duplicated host items
+* `hosts.log` - comprehensive report on duplicated host items
