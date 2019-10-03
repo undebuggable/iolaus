@@ -10,7 +10,7 @@ This utility is fetching hosts files from various sources, removes duplicate ent
 
 Entries in the example host files are mostly [analytics networks, ad networks, tracking networks](https://en.wikipedia.org/wiki/Advertising_network), and [shock sites](https://en.wikipedia.org/wiki/Shock_site).
 
-The output [hosts file](https://en.wikipedia.org/wiki/Hosts_(file\)) can be placed, depending on your operating system:
+This utility doesn't modify system files, neither requires root permissions. The output [hosts file](https://en.wikipedia.org/wiki/Hosts_%28file%29)) can be placed, depending on your operating system:
 ```bash
 #Linux, MacOS
 /etc/hosts
