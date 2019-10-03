@@ -13,41 +13,32 @@ log = []
 urlIndex = {}
 whitelist = {}
 
-
 def load_whitelist():
     if os.path.isfile(CONFIG.PATH_WHITELIST):
-        f = open(CONFIG.PATH_WHITELIST, "r")
+        f = open(CONFIG.PATH_WHITELIST, "rb")
         file_whitelist = f.readlines()
         f.close()
-        for line in file_whitelist:
+        for _line in file_whitelist:
+            line = _line.decode("utf-8")
             whitelist[line.split("#")[0].strip()] = True
         print(CONFIG.LOG_WHITELIST_LOADED)
     else:
         print(CONFIG.LOG_WHITELIST_FAILED)
 
-
-def load_host_files():
-    parser = OptionParser()
-    (options, args) = parser.parse_args()
-    for filename in args:
-        if os.path.isfile(filename):
-            f = open(filename, "r")
-            hostFilesContent[filename] = f.readlines()
-            f.close()
-        else:
-            print(CONFIG.LOG_FILE_DOESNT_EXIST.format(filename))
-    if len(hostFilesContent) > 0:
-        return True
-    return False
-
+def load_blacklist():
+    if os.path.isfile(CONFIG.PATH_BLACKLIST):
+        f = open(CONFIG.PATH_BLACKLIST, "rb")
+        hostFilesContent[CONFIG.PATH_BLACKLIST] = f.readlines()
+        f.close()
+        print("Loaded local file\t{}".format(CONFIG.PATH_BLACKLIST))
+    else:
+        print(CONFIG.LOG_FILE_DOESNT_EXIST.format(CONFIG.PATH_BLACKLIST))
 
 def index_urls():
     entries_per_file = {}
     for hostFileOrigin in hostFilesContent:
         entries_per_file[hostFileOrigin] = 0
         for _line in hostFilesContent[hostFileOrigin]:
-            # hostFileOriginline = str(_line).decode("utf-8")
-            hostFileOriginline = _line.decode("utf-8")
             line = _line.decode("utf-8")
             if line.startswith(CONFIG.IP_LOCAL_0) or line.startswith(
                 CONFIG.IP_LOCAL_127
@@ -70,18 +61,16 @@ def index_urls():
                         entries_per_file[hostFileOrigin] += 1
     for hostFileOrigin in entries_per_file:
         print(
-            "{}\tunique host entries in the file\t{}".format(
+            CONFIG.LOG_ENTRIES_FOUND_FILE.format(
                 entries_per_file[hostFileOrigin], hostFileOrigin
             )
         )
-    print("{} unique host entries in total".format(sum(entries_per_file.values())))
+    print(CONFIG.LOG_ENTRIES_FOUND_TOTAL.format(sum(entries_per_file.values())))
 
 
 def fetch_host_files():
     global hostFilesContent
     hostFilesContent = {}
-    parser = OptionParser()
-    (options, args) = parser.parse_args()
     for server_url in HOST_FILES.URL_HOST_FILES:
         try:
             print("Fetching hosts file\n========\n{}".format(server_url))
@@ -96,36 +85,25 @@ def fetch_host_files():
             # 200
             print(CONFIG.LOG_FILE_AVAILABLE)
             hostFilesContent[server_url] = response.readlines()
-    for filename in args:
-        if os.path.isfile(filename):
-            f = open(filename, "r")
-            hostFilesContent[filename] = f.readlines()
-            f.close()
-        else:
-            print(CONFIG.LOG_FILE_DOESNT_EXIST.format(filename))
-    if len(hostFilesContent) > 0:
-        return True
-    return False
-
 
 def merge_host_files():
-    if fetch_host_files():
-        load_whitelist()
-        index_urls()
-        hosts_merged = open(CONFIG.PATH_MERGED, "w")
-        hosts_log = open(CONFIG.PATH_LOG, "w")
-        hosts_merged.write(
-            CONFIG.IP_BLOCKING
-            + " "
-            + ("\n" + CONFIG.IP_BLOCKING + " ").join(sorted(urlIndex.keys()))
-        )
-        print(CONFIG.LOG_SAVED_HOSTS)
-        hosts_log.write("\n".join(log))
-        print(CONFIG.LOG_SAVED_LOG)
-        hosts_merged.close()
-        hosts_log.close()
-    else:
-        print(CONFIG.LOG_NO_INPUT)
+    fetch_host_files()
+    load_whitelist()
+    load_blacklist()
+    index_urls()
 
+    hosts_merged = open(CONFIG.PATH_MERGED, "w")
+    hosts_merged.write(
+        CONFIG.IP_BLOCKING
+        + " "
+        + ("\n" + CONFIG.IP_BLOCKING + " ").join(sorted(urlIndex.keys()))
+    )
+    hosts_merged.close()
+    print(CONFIG.LOG_SAVED_HOSTS)
+
+    hosts_log = open(CONFIG.PATH_LOG, "w")
+    hosts_log.write("\n".join(log))
+    hosts_log.close()
+    print(CONFIG.LOG_SAVED_LOG)
 
 merge_host_files()

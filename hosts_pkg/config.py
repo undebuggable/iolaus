@@ -4,6 +4,7 @@ IP_BLOCKING = IP_LOCAL_0
 TLD_REGEX = ".net|.org|.com"
 
 PATH_WHITELIST = "hosts.whitelist"
+PATH_BLACKLIST = "hosts.blacklist"
 PATH_MERGED = "hosts.merged"
 PATH_LOG = "hosts.log"
 
@@ -18,3 +19,5 @@ LOG_FILE_NOT_AVAILABLE = "❌ NOT available"
 LOG_FILE_DOESNT_EXIST = "The file {} doesn't exist"
 LOG_WHITELIST_LOADED = "Loaded whitelist from file {}".format(PATH_WHITELIST)
 LOG_WHITELIST_FAILED = "Failed to load whitelist from file {}".format(PATH_WHITELIST)
+LOG_ENTRIES_FOUND_FILE = "{}\tunique host entries in the file\t{}"
+LOG_ENTRIES_FOUND_TOTAL = "{} unique host entries in total"
