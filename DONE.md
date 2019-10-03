@@ -1,0 +1,1 @@
+* [✔️|TASK] Load `hosts.blacklist` file automatically
