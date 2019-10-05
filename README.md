@@ -18,7 +18,7 @@ This utility doesn't modify system files, neither requires root permissions. The
 
 Before modifying the default hosts file, please observe the permission and ownership settings (e.g. `ls -la /etc/hosts` on UNIX systems), and default entries present in the default system's hosts file. Preserving these might be important for your setup.
 
-Alternatively (or simultaneously) one can apply the resultant hosts file to the local network wide, e.g. in Asuswrt-Merlin:
+Alternatively (or simultaneously) one can apply the output hosts file local network wide, e.g. in Asuswrt-Merlin:
 ```bash
 /jffs/configs/dnsmasq.conf.add
 ```
