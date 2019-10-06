@@ -6,9 +6,9 @@ Fetch ad blocking hosts files from various origins and merge them.
 Introduction
 -------
 
-This utility is fetching hosts files from various sources, removes duplicate entries, and redirects each of them into the [local loop IP address `0.0.0.0`](https://tools.ietf.org/html/rfc6890#section-1).
+This utility is fetching hosts files from various sources, removes duplicate entries, and redirects each of them to ["this" network (`0.0.0.0`)](https://tools.ietf.org/html/rfc5735.html#section-4).
 
-Entries in the example host files are mostly [analytics networks, ad networks, tracking networks](https://en.wikipedia.org/wiki/Advertising_network), and [shock sites](https://en.wikipedia.org/wiki/Shock_site).
+Entries in the predefined host files are mostly [analytics networks, ad networks, tracking networks](https://en.wikipedia.org/wiki/Advertising_network), and [shock sites](https://en.wikipedia.org/wiki/Shock_site).
 
 This utility doesn't modify system files, neither requires root permissions. The output [hosts file](https://en.wikipedia.org/wiki/Hosts_%28file%29) can be placed, depending on your operating system:
 ```bash
