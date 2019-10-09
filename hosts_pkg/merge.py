@@ -1,7 +1,6 @@
 import os.path
 import urllib.error
 import urllib.request
-from optparse import OptionParser
 
 from . import config as CONFIG
 from . import config_hosts_various as HOST_FILES
@@ -10,6 +9,7 @@ log = []
 
 url_index = {}
 whitelist = {}
+
 
 def load_whitelist():
     if os.path.isfile(CONFIG.PATH_WHITELIST):
@@ -23,6 +23,7 @@ def load_whitelist():
     else:
         print(CONFIG.UI_WHITELIST_FAILED)
 
+
 def load_blacklist():
     if os.path.isfile(CONFIG.PATH_BLACKLIST):
         f = open(CONFIG.PATH_BLACKLIST, "rb")
@@ -32,9 +33,11 @@ def load_blacklist():
     else:
         print(CONFIG.UI_FILE_DOESNT_EXIST.format(CONFIG.PATH_BLACKLIST))
 
+
 def index_urls():
     entries_per_file = {}
     for hostFileOrigin in hostFilesContent:
+
         entries_per_file[hostFileOrigin] = 0
         for _line in hostFilesContent[hostFileOrigin]:
             line = _line.decode(CONFIG.ENCODING_UTF8)
@@ -84,6 +87,7 @@ def fetch_host_files():
             print(CONFIG.UI_FILE_AVAILABLE)
             hostFilesContent[server_url] = response.readlines()
 
+
 def merge_host_files():
     fetch_host_files()
     load_whitelist()
@@ -94,7 +98,7 @@ def merge_host_files():
     hosts_merged.write(
         "{} {}".format(
             CONFIG.IP_BLOCKING,
-            ("\n" + CONFIG.IP_BLOCKING + " ").join(sorted(url_index.keys()))
+            ("\n" + CONFIG.IP_BLOCKING + " ").join(sorted(url_index.keys())),
         )
     )
     hosts_merged.close()
@@ -104,5 +108,6 @@ def merge_host_files():
     hosts_log.write("\n".join(log))
     hosts_log.close()
     print(CONFIG.UI_SAVED_LOG)
+
 
 merge_host_files()
